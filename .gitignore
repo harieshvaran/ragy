@@ -1,0 +1,4 @@
+backend/venv/
+backend/chroma/
+models/**/*.safetensors
+__pycache__/
