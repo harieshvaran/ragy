@@ -98,4 +98,6 @@ Answer:
     )
 
 
-    return response
+    answer = response.split("Answer:")[-1].strip()
+
+    return answer

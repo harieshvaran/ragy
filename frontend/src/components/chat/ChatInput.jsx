@@ -1,7 +1,11 @@
 import { useState } from "react"
 import { askQuestion } from "../../services/api"
 
-function ChatInput({ setAnswer }) {
+function ChatInput({
+  messages,
+  setMessages,
+  setSources
+}) {
   const [question, setQuestion] = useState("")
   const [loading, setLoading] = useState(false)
 
@@ -10,23 +14,46 @@ function ChatInput({ setAnswer }) {
       return
     }
 
+    const userMessage = {
+      role: "user",
+      content: question
+    }
+
+    setMessages(prev => [
+      ...prev,
+      userMessage
+    ])
+
     try {
       setLoading(true)
 
       const result = await askQuestion(question)
 
-      setAnswer(result.answer)
-    } catch (error) {
-      console.error(error)
+      const assistantMessage = {
+        role: "assistant",
+        content: result.answer
+      }
 
-      setAnswer("Failed to get answer.")
-    } finally {
+      setMessages(prev => [
+        ...prev,
+        assistantMessage
+      ])
+
+      setSources(result.sources || [])
+
+      setQuestion("")
+    }
+    catch (error) {
+      console.error(error)
+    }
+    finally {
       setLoading(false)
     }
   }
 
   return (
     <div className="border-t border-[#222226] p-6">
+
       <div className="flex gap-3">
 
         <input
@@ -45,6 +72,7 @@ function ChatInput({ setAnswer }) {
         </button>
 
       </div>
+
     </div>
   )
 }

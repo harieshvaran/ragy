@@ -1,4 +1,13 @@
-backend/venv/
-backend/chroma/
-models/**/*.safetensors
+
+# Python
 __pycache__/
+*.pyc
+venv/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# ChromaDB
+backend/chroma/
