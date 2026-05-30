@@ -14,4 +14,14 @@ export const uploadDocument = async (file) => {
   return response.data
 }
 
+export const askQuestion = async (query) => {
+  const response = await api.get("/ask", {
+    params: {
+      query
+    }
+  })
+
+  return response.data
+}
+
 export default api

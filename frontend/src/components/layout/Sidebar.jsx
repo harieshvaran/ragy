@@ -3,7 +3,7 @@ function Sidebar() {
     <div className="h-full bg-[#121214] border-r border-[#222226] flex flex-col">
       
       <div className="p-6">
-        <h1 className="text-2xl font-semibold text-white">
+        <h1 className="text-3xl font-semibold text-white">
           DocScout
         </h1>
 
