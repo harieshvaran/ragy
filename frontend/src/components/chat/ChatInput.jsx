@@ -10,7 +10,7 @@ function ChatInput({
   const [loading, setLoading] = useState(false)
 
   const handleAsk = async () => {
-    if (!question.trim()) {
+    if (!question.trim() || loading) {
       return
     }
 
@@ -19,32 +19,52 @@ function ChatInput({
       content: question
     }
 
+    const thinkingMessage = {
+      role: "assistant",
+      content: "Thinking..."
+    }
+
     setMessages(prev => [
       ...prev,
-      userMessage
+      userMessage,
+      thinkingMessage
     ])
+
+    const currentQuestion = question
+
+    setQuestion("")
 
     try {
       setLoading(true)
 
-      const result = await askQuestion(question)
+      const result = await askQuestion(currentQuestion)
 
-      const assistantMessage = {
-        role: "assistant",
-        content: result.answer
-      }
+      setMessages(prev => {
+        const updated = [...prev]
 
-      setMessages(prev => [
-        ...prev,
-        assistantMessage
-      ])
+        updated[updated.length - 1] = {
+          role: "assistant",
+          content: result.answer
+        }
+
+        return updated
+      })
 
       setSources(result.sources || [])
-
-      setQuestion("")
     }
     catch (error) {
       console.error(error)
+
+      setMessages(prev => {
+        const updated = [...prev]
+
+        updated[updated.length - 1] = {
+          role: "assistant",
+          content: "Failed to get response from server."
+        }
+
+        return updated
+      })
     }
     finally {
       setLoading(false)
@@ -60,15 +80,21 @@ function ChatInput({
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleAsk()
+            }
+          }}
           placeholder="Ask something about the document..."
           className="flex-1 rounded-xl border border-[#222226] bg-[#121214] px-4 py-3 text-white outline-none"
         />
 
         <button
           onClick={handleAsk}
-          className="rounded-xl bg-white px-5 py-3 font-medium text-black"
+          disabled={loading}
+          className="rounded-xl bg-white px-5 py-3 font-medium text-black disabled:opacity-50"
         >
-          {loading ? "..." : "Ask"}
+          {loading ? "Thinking..." : "Ask"}
         </button>
 
       </div>

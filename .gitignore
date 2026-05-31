@@ -11,3 +11,5 @@ venv/
 
 # ChromaDB
 backend/chroma/
+
+.env
