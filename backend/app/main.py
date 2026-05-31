@@ -129,6 +129,17 @@ async def upload_pdf(
     ).tolist()
 
 
+    existing_ids = collection.get()["ids"]
+
+    if len(existing_ids) > 0:
+
+        collection.delete(
+
+            ids=existing_ids
+
+        )
+
+
 
     ids = [
 
@@ -202,6 +213,14 @@ def ask(
         results["documents"][0]
 
     )
+
+
+
+    print("\n")
+    print("===== RETRIEVED CONTEXT =====")
+    print(context)
+    print("=============================")
+    print("\n")
 
 
 

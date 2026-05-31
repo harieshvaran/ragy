@@ -59,6 +59,18 @@ def generate_answer(
 
 
     prompt = f"""
+You are DocScout AI.
+
+Answer the user's question using ONLY the provided context.
+
+Rules:
+- Do not invent information.
+- Do not continue the document.
+- Do not repeat the context.
+- Keep the answer concise.
+- If the answer is not found in the context, say:
+  "I could not find this information in the document."
+
 Context:
 {context}
 
@@ -73,7 +85,11 @@ Answer:
 
         prompt,
 
-        return_tensors="pt"
+        return_tensors="pt",
+
+        truncation=True,
+
+        max_length=2048
 
     ).to(model.device)
 
@@ -83,7 +99,11 @@ Answer:
 
         **inputs,
 
-        max_new_tokens=100
+        max_new_tokens=80,
+
+        do_sample=False,
+
+        temperature=0.1
 
     )
 
