@@ -1,4 +1,5 @@
-# RAGY
+# SIMPLE RAG
+
 
 ### Retrieval-Augmented Generation for Document Question Answering
 
